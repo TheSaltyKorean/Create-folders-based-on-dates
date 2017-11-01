@@ -1,17 +1,22 @@
-$SourceDir = "C:\Users\RandyWalker\Desktop\Pictures\"
-$DestinationDir = "C:\Users\RandyWalker\Desktop\FolderPictures\"
+. .\Get-FileMetaDataReturnObject.ps1
 
-foreach ($file in get-childitem $SourceDir *.*) 
+$SourceDir = "C:\Users\RandyWalker\OneDrive\SkyDrive camera roll\"
+$DestinationDir = "C:\Users\RandyWalker\OneDrive\SkyDrive camera roll\"
+
+$FileMetaData = Get-FileMetaData -SourceDir $SourceDir
+
+foreach ($file in $FileMetaData) 
 {
-    $Directory = $DestinationDir + $file.LastWriteTime.ToString("yyyy-MM-dd")
+
+    $Dir = $DestinationDir + $file.CreationTime.ToString("yyyy-MM-dd")
     $FullDestinationDir
 
-    if (!(Test-Path $Directory))
+    if (!(Test-Path $Dir))
     {
-        Write-Host "Created Directory : " $DestinationDir $directory
-        New-Item $directory -type directory
+        Write-Host "Created Directory : " $DestinationDir $Dir
+        New-Item $Dir -type directory
     }
 
-    Write-Host "Moving file : " $file.fullname " to " $directory
-    Move-Item $file.fullname $directory
+    Write-Host "Moving file : " $file.fullname " to " $Dir
+    Move-Item $file.fullname $Dir
 } 
